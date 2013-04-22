@@ -292,11 +292,13 @@ bool IF::runOnFunction(Function &F) {
   {
      if (isa<ReturnInst>(*I))
 	IF.markChanged(&*I); // mark all return values to be high previliege instead
+     else IF.markUnchanged(&*I); // mark all other instructions to be low previliege is it correct?
   }
 
 // Now mark some of the variables as changed
 // By Default we mark all the uses of the arguments to the function as changed
-  for (Function::arg_iterator AI = F.arg_begin(), E = F.arg_end(); AI != E;++AI)
+// commenting below for now
+/*  for (Function::arg_iterator AI = F.arg_begin(), E = F.arg_end(); AI != E;++AI)
   {    //IF.markChanged(AI);
 
     for (Value::use_iterator i = AI->use_begin(), e = AI->use_end(); i != e; ++i)
@@ -306,7 +308,7 @@ bool IF::runOnFunction(Function &F) {
         IF.markUnchanged(Inst);
       }
   }
-
+*/
 
   IF.RunAnalysis();
 
