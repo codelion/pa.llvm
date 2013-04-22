@@ -28,6 +28,8 @@
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/ADT/STLExtras.h"
+#include "llvm/DebugInfo.h"
+
 #include <algorithm>
 #include <map>
 using namespace llvm;
@@ -231,7 +233,7 @@ void Analyzer::RunAnalysis(){
     while(!ChInstWorkList.empty()) {
       Value *I = ChInstWorkList.pop_back_val();
 
-      DEBUG(dbgs() << "\nPopped off ChI-WL: " << *I << '\n');
+      //DEBUG(dbgs() << "\nPopped off ChI-WL: " << *I << '\n');
       // Instruction 'I' got into this worklist because it made a transition from (undef or unch) to ch
       // All users of this instruction have to be visited to progate this change
       for (Value::use_iterator UI = I->use_begin(), E = I->use_end();
@@ -242,7 +244,7 @@ void Analyzer::RunAnalysis(){
     while(!InstWorkList.empty()) {
       Value *I = InstWorkList.pop_back_val();
 
-      DEBUG(dbgs() << "\nPopped off I-WL: " << *I << '\n');
+      //DEBUG(dbgs() << "\nPopped off I-WL: " << *I << '\n');
       // Instruction 'I' got into this worklist because it made a transition from undef to unch
       // propagate this change to the uses of this instruction
       for (Value::use_iterator UI = I->use_begin(), E = I->use_end();
@@ -313,15 +315,27 @@ bool IF::runOnFunction(Function &F) {
   IF.RunAnalysis();
 
 //After Analysis Update Stats
+  unsigned Line;
+  StringRef File, Dir;
+  MDNode* N;
   for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I){
+    if (I->getMetadata("dbg")) {  // Here I is an LLVM instruction
+       N = I->getMetadata("dbg"); // Here I is an LLVM instruction      
+       DILocation Loc(N);                      // DILocation is in DebugInfo.h
+       Line = Loc.getLineNumber();
+       File = Loc.getFilename();
+       Dir = Loc.getDirectory();
+    }
     LatticeVal IV = IF.getLatticeValueFor(&*I);
     if(IV.isChanged()) {
      ++NumInstChanged;
-     DEBUG(dbgs() << "\n High      :" << *I << '\n');    
+     //DEBUG(dbgs() << Dir << '/' << File << ':'<< Line << " (High)      :" << *I << '\n');
+     DEBUG(dbgs() << File << ':'<< Line << " (High):" << *I << '\n');        
      }
     else if(IV.isUnchanged()) {
     ++NumInstUnchanged;
-     DEBUG(dbgs() << "\n Low       :" << *I << " Retained to Low \n");        
+     //DEBUG(dbgs() << Dir << '/' << File << ':'<< Line << " (Low)      :" << *I << '\n');        
+     DEBUG(dbgs() << File << ':'<< Line << " (Low) :" << *I << '\n');        
     }
     else {
     ++NumInstUndef;

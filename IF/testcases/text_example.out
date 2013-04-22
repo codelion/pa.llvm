@@ -5,281 +5,128 @@ you REALLY want to taste LLVM bitcode first-hand, you
 can force output with the `-f' option.
 
 Change Value Analysis on function 'gcd'
-
-Popped off ChI-WL:   ret i32 %12
-
-Popped off I-WL:   store i32 %c, i32* %c.addr, align 4
-
-Popped off I-WL:   store i32 %a_i, i32* %a_i.addr, align 4
-
- Low       :  store i32 %a_i, i32* %a_i.addr, align 4 Retained to Low 
-
- Low       :  store i32 %c, i32* %c.addr, align 4 Retained to Low 
-
- High      :  ret i32 %12
+:4294967288 (Low) :  %a_i.addr = alloca i32, align 4
+:4294967288 (Low) :  %c.addr = alloca i32, align 4
+:4294967288 (Low) :  %m = alloca i32, align 4
+:4294967288 (Low) :  %n = alloca i32, align 4
+:4294967288 (High):  store i32 %a_i, i32* %a_i.addr, align 4
+text_example.c:10 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %a_i.addr}, metadata !17), !dbg !18
+text_example.c:10 (High):  store i32 %c, i32* %c.addr, align 4
+text_example.c:10 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %c.addr}, metadata !19), !dbg !18
+text_example.c:12 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %m}, metadata !20), !dbg !22
+text_example.c:12 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %n}, metadata !23), !dbg !22
+text_example.c:13 (High):  %0 = load i32* %a_i.addr, align 4, !dbg !24
+text_example.c:13 (High):  %call = call i32 @abs(i32 %0) nounwind readnone, !dbg !24
+text_example.c:13 (High):  store i32 %call, i32* %m, align 4, !dbg !24
+text_example.c:14 (High):  %1 = load i32* %c.addr, align 4, !dbg !25
+text_example.c:14 (High):  %call1 = call i32 @abs(i32 %1) nounwind readnone, !dbg !25
+text_example.c:14 (High):  store i32 %call1, i32* %n, align 4, !dbg !25
+text_example.c:15 (High):  %2 = load i32* %m, align 4, !dbg !26
+text_example.c:15 (High):  %cmp = icmp eq i32 %2, 0, !dbg !26
+text_example.c:15 (High):  br i1 %cmp, label %if.then, label %if.else, !dbg !26
+text_example.c:16 (High):  store i32 1073741823, i32* %m, align 4, !dbg !27
+text_example.c:17 (Low) :  br label %if.end10, !dbg !29
+text_example.c:18 (High):  %3 = load i32* %n, align 4, !dbg !30
+text_example.c:18 (High):  %cmp2 = icmp ne i32 %3, 0, !dbg !30
+text_example.c:18 (High):  br i1 %cmp2, label %if.then3, label %if.end9, !dbg !30
+text_example.c:20 (Low) :  br label %while.cond, !dbg !31
+text_example.c:20 (High):  %4 = load i32* %m, align 4, !dbg !31
+text_example.c:20 (High):  %5 = load i32* %n, align 4, !dbg !31
+text_example.c:20 (High):  %cmp4 = icmp ne i32 %4, %5, !dbg !31
+text_example.c:20 (High):  br i1 %cmp4, label %while.body, label %while.end, !dbg !31
+text_example.c:22 (High):  %6 = load i32* %m, align 4, !dbg !33
+text_example.c:22 (High):  %7 = load i32* %n, align 4, !dbg !33
+text_example.c:22 (High):  %cmp5 = icmp sgt i32 %6, %7, !dbg !33
+text_example.c:22 (High):  br i1 %cmp5, label %if.then6, label %if.else7, !dbg !33
+text_example.c:23 (High):  %8 = load i32* %m, align 4, !dbg !35
+text_example.c:23 (High):  %9 = load i32* %n, align 4, !dbg !35
+text_example.c:23 (High):  %sub = sub nsw i32 %8, %9, !dbg !35
+text_example.c:23 (High):  store i32 %sub, i32* %m, align 4, !dbg !35
+text_example.c:23 (Low) :  br label %if.end, !dbg !35
+text_example.c:25 (High):  %10 = load i32* %n, align 4, !dbg !36
+text_example.c:25 (High):  %11 = load i32* %m, align 4, !dbg !36
+text_example.c:25 (High):  %sub8 = sub nsw i32 %10, %11, !dbg !36
+text_example.c:25 (High):  store i32 %sub8, i32* %n, align 4, !dbg !36
+text_example.c:25 (Low) :  br label %if.end
+text_example.c:26 (Low) :  br label %while.cond, !dbg !37
+text_example.c:27 (Low) :  br label %if.end9, !dbg !38
+text_example.c:27 (Low) :  br label %if.end10
+text_example.c:28 (High):  %12 = load i32* %m, align 4, !dbg !39
+text_example.c:28 (High):  ret i32 %12, !dbg !39
 Change Value Analysis on function 'get_gcd_sum'
-
-Popped off ChI-WL:   ret i32 %19
-
-Popped off I-WL:   store i32 %c, i32* %c.addr, align 4
-
-Popped off I-WL:   store i32 %a_len, i32* %a_len.addr, align 4
-
-Popped off I-WL:   store i32* %a, i32** %a.addr, align 4
-
- Low       :  store i32* %a, i32** %a.addr, align 4 Retained to Low 
-
- Low       :  store i32 %a_len, i32* %a_len.addr, align 4 Retained to Low 
-
- Low       :  store i32 %c, i32* %c.addr, align 4 Retained to Low 
-
- High      :  ret i32 %19
+:4 (Low) :  %a.addr = alloca i32*, align 4
+:4 (Low) :  %a_len.addr = alloca i32, align 4
+:4 (Low) :  %c.addr = alloca i32, align 4
+:4 (Low) :  %gsum = alloca i32, align 4
+:4 (Low) :  %i = alloca i32, align 4
+:4 (Low) :  %j = alloca i32, align 4
+:4 (High):  store i32* %a, i32** %a.addr, align 4
+text_example.c:31 (Low) :  call void @llvm.dbg.declare(metadata !{i32** %a.addr}, metadata !17), !dbg !18
+text_example.c:31 (High):  store i32 %a_len, i32* %a_len.addr, align 4
+text_example.c:31 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %a_len.addr}, metadata !19), !dbg !18
+text_example.c:31 (High):  store i32 %c, i32* %c.addr, align 4
+text_example.c:31 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %c.addr}, metadata !20), !dbg !18
+text_example.c:32 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %gsum}, metadata !21), !dbg !23
+text_example.c:32 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %i}, metadata !24), !dbg !23
+text_example.c:32 (Low) :  call void @llvm.dbg.declare(metadata !{i32* %j}, metadata !25), !dbg !23
+text_example.c:33 (High):  %0 = load i32** %a.addr, align 4, !dbg !26
+text_example.c:33 (High):  %tobool = icmp ne i32* %0, null, !dbg !26
+text_example.c:33 (High):  br i1 %tobool, label %lor.lhs.false, label %if.then, !dbg !26
+text_example.c:33 (High):  %1 = load i32* %a_len.addr, align 4, !dbg !26
+text_example.c:33 (High):  %cmp = icmp eq i32 %1, 0, !dbg !26
+text_example.c:33 (High):  br i1 %cmp, label %if.then, label %if.else, !dbg !26
+text_example.c:34 (High):  %2 = load i32* %c.addr, align 4, !dbg !27
+text_example.c:34 (High):  store i32 %2, i32* %gsum, align 4, !dbg !27
+text_example.c:35 (Low) :  br label %if.end7, !dbg !29
+text_example.c:36 (High):  %3 = load i32** %a.addr, align 4, !dbg !30
+text_example.c:36 (High):  %arrayidx = getelementptr inbounds i32* %3, i32 0, !dbg !30
+text_example.c:36 (High):  %4 = load i32* %arrayidx, align 4, !dbg !30
+text_example.c:36 (High):  %cmp1 = icmp eq i32 %4, 0, !dbg !30
+text_example.c:36 (High):  br i1 %cmp1, label %land.lhs.true, label %if.else4, !dbg !30
+text_example.c:36 (High):  %5 = load i32* %c.addr, align 4, !dbg !30
+text_example.c:36 (High):  %cmp2 = icmp eq i32 %5, 0, !dbg !30
+text_example.c:36 (High):  br i1 %cmp2, label %if.then3, label %if.else4, !dbg !30
+text_example.c:37 (High):  store i32 1073741823, i32* %gsum, align 4, !dbg !31
+text_example.c:38 (Low) :  br label %if.end, !dbg !33
+text_example.c:40 (High):  store i32 0, i32* %gsum, align 4, !dbg !34
+text_example.c:41 (High):  store i32 0, i32* %i, align 4, !dbg !36
+text_example.c:41 (Low) :  br label %for.cond, !dbg !36
+text_example.c:41 (High):  %6 = load i32* %i, align 4, !dbg !36
+text_example.c:41 (High):  %7 = load i32* %a_len.addr, align 4, !dbg !36
+text_example.c:41 (High):  %cmp5 = icmp slt i32 %6, %7, !dbg !36
+text_example.c:41 (High):  br i1 %cmp5, label %for.body, label %for.end, !dbg !36
+text_example.c:42 (High):  %8 = load i32* %gsum, align 4, !dbg !38
+text_example.c:42 (High):  %9 = load i32* %i, align 4, !dbg !38
+text_example.c:42 (High):  %10 = load i32** %a.addr, align 4, !dbg !38
+text_example.c:42 (High):  %arrayidx6 = getelementptr inbounds i32* %10, i32 %9, !dbg !38
+text_example.c:42 (High):  %11 = load i32* %arrayidx6, align 4, !dbg !38
+text_example.c:42 (High):  %12 = load i32* %c.addr, align 4, !dbg !38
+text_example.c:42 (High):  %call = call i32 @gcd(i32 %11, i32 %12), !dbg !38
+text_example.c:42 (High):  %add = add nsw i32 %8, %call, !dbg !38
+text_example.c:42 (High):  store i32 %add, i32* %gsum, align 4, !dbg !38
+text_example.c:43 (Low) :  br label %for.inc, !dbg !40
+text_example.c:41 (High):  %13 = load i32* %i, align 4, !dbg !36
+text_example.c:41 (High):  %inc = add nsw i32 %13, 1, !dbg !36
+text_example.c:41 (High):  store i32 %inc, i32* %i, align 4, !dbg !36
+text_example.c:41 (Low) :  br label %for.cond, !dbg !36
+text_example.c:41 (Low) :  br label %if.end
+text_example.c:41 (Low) :  br label %if.end7
+text_example.c:45 (High):  %14 = load i32* %c.addr, align 4, !dbg !41
+text_example.c:45 (High):  %rem = srem i32 %14, 10, !dbg !41
+text_example.c:45 (High):  store i32 %rem, i32* %j, align 4, !dbg !41
+text_example.c:46 (High):  %15 = load i32* %gsum, align 4, !dbg !42
+text_example.c:46 (High):  %16 = load i32* %c.addr, align 4, !dbg !42
+text_example.c:46 (High):  %div = sdiv i32 %15, %16, !dbg !42
+text_example.c:46 (High):  %17 = load i32* %j, align 4, !dbg !42
+text_example.c:46 (Low) :  %18 = load i32** @out, align 4, !dbg !42
+text_example.c:46 (High):  %arrayidx8 = getelementptr inbounds i32* %18, i32 %17, !dbg !42
+text_example.c:46 (High):  store i32 %div, i32* %arrayidx8, align 4, !dbg !42
+text_example.c:47 (High):  %19 = load i32* %gsum, align 4, !dbg !43
+text_example.c:47 (High):  ret i32 %19, !dbg !43
 ===-------------------------------------------------------------------------===
                           ... Statistics Collected ...
 ===-------------------------------------------------------------------------===
 
-  2 if - Number of Instructions in High Privilege (Using IF)
-  5 if - Number of Instructions in Low Privilege (Using IF)
-100 if - Number of Instructions in Unknown Privilege (Using IF)
-
-Args: opt -load /usr/local/lib/IF.so -mem2reg -IF -stats -debug text_example.ll 
-WARNING: You're attempting to print out a bitcode file.
-This is inadvisable as it may cause display problems. If
-you REALLY want to taste LLVM bitcode first-hand, you
-can force output with the `-f' option.
-
-Change Value Analysis on function 'gcd'
-
-Popped off ChI-WL:   ret i32 %m.3
-
-Popped off I-WL:   %call1 = call i32 @abs(i32 %c) nounwind readnone
-
-Popped off I-WL:   %call = call i32 @abs(i32 %a_i) nounwind readnone
-
-Popped off ChI-WL:   %cmp = icmp eq i32 %call, 0
-
-Popped off ChI-WL:   br i1 %cmp, label %if.then, label %if.else
-
-Popped off ChI-WL:   %m.0 = phi i32 [ %call, %if.then3 ], [ %m.1, %if.end ]
-
-Popped off ChI-WL:   %cmp4 = icmp ne i32 %m.0, %n.0
-
-Popped off ChI-WL:   br i1 %cmp4, label %while.body, label %while.end
-
-Popped off ChI-WL:   %cmp5 = icmp sgt i32 %m.0, %n.0
-
-Popped off ChI-WL:   br i1 %cmp5, label %if.then6, label %if.else7
-
-Popped off ChI-WL:   %sub = sub nsw i32 %m.0, %n.0
-
-Popped off ChI-WL:   %sub8 = sub nsw i32 %n.0, %m.0
-
-Popped off ChI-WL:   %n.1 = phi i32 [ %n.0, %if.then6 ], [ %sub8, %if.else7 ]
-
-Popped off ChI-WL:   %m.1 = phi i32 [ %sub, %if.then6 ], [ %m.0, %if.else7 ]
-
-Popped off ChI-WL:   %m.2 = phi i32 [ %m.0, %while.end ], [ %call, %if.else ]
-
-Popped off ChI-WL:   %m.3 = phi i32 [ 1073741823, %if.then ], [ %m.2, %if.end9 ]
-
-Popped off ChI-WL:   %cmp2 = icmp ne i32 %call1, 0
-
-Popped off ChI-WL:   br i1 %cmp2, label %if.then3, label %if.end9
-
-Popped off ChI-WL:   %n.0 = phi i32 [ %call1, %if.then3 ], [ %n.1, %if.end ]
-
- Low       :  %call = call i32 @abs(i32 %a_i) nounwind readnone Retained to Low 
-
- Low       :  %call1 = call i32 @abs(i32 %c) nounwind readnone Retained to Low 
-
- High      :  %cmp = icmp eq i32 %call, 0
-
- High      :  br i1 %cmp, label %if.then, label %if.else
-
- High      :  %cmp2 = icmp ne i32 %call1, 0
-
- High      :  br i1 %cmp2, label %if.then3, label %if.end9
-
- High      :  %m.0 = phi i32 [ %call, %if.then3 ], [ %m.1, %if.end ]
-
- High      :  %n.0 = phi i32 [ %call1, %if.then3 ], [ %n.1, %if.end ]
-
- High      :  %cmp4 = icmp ne i32 %m.0, %n.0
-
- High      :  br i1 %cmp4, label %while.body, label %while.end
-
- High      :  %cmp5 = icmp sgt i32 %m.0, %n.0
-
- High      :  br i1 %cmp5, label %if.then6, label %if.else7
-
- High      :  %sub = sub nsw i32 %m.0, %n.0
-
- High      :  %sub8 = sub nsw i32 %n.0, %m.0
-
- High      :  %m.1 = phi i32 [ %sub, %if.then6 ], [ %m.0, %if.else7 ]
-
- High      :  %n.1 = phi i32 [ %n.0, %if.then6 ], [ %sub8, %if.else7 ]
-
- High      :  %m.2 = phi i32 [ %m.0, %while.end ], [ %call, %if.else ]
-
- High      :  %m.3 = phi i32 [ 1073741823, %if.then ], [ %m.2, %if.end9 ]
-
- High      :  ret i32 %m.3
-Change Value Analysis on function 'get_gcd_sum'
-
-Popped off ChI-WL:   ret i32 %gsum.2
-
-Popped off I-WL:   %div = sdiv i32 %gsum.2, %c
-
-Popped off I-WL:   %rem = srem i32 %c, 10
-
-Popped off I-WL:   %call = call i32 @gcd(i32 %1, i32 %c)
-
-Popped off I-WL:   %cmp2 = icmp eq i32 %c, 0
-
-Popped off I-WL:   %gsum.2 = phi i32 [ %c, %if.then ], [ %gsum.1, %if.end ]
-
-Popped off I-WL:   %cmp5 = icmp slt i32 %i.0, %a_len
-
-Popped off I-WL:   %cmp = icmp eq i32 %a_len, 0
-
-Popped off I-WL:   %arrayidx6 = getelementptr inbounds i32* %a, i32 %i.0
-
-Popped off I-WL:   %arrayidx = getelementptr inbounds i32* %a, i32 0
-
-Popped off I-WL:   %tobool = icmp ne i32* %a, null
-
-Popped off ChI-WL:   br i1 %tobool, label %lor.lhs.false, label %if.then
-
-Popped off ChI-WL:   %0 = load i32* %arrayidx, align 4
-
-Popped off ChI-WL:   %cmp1 = icmp eq i32 %0, 0
-
-Popped off ChI-WL:   br i1 %cmp1, label %land.lhs.true, label %if.else4
-
-Popped off ChI-WL:   %1 = load i32* %arrayidx6, align 4
-
-Popped off ChI-WL:   %call = call i32 @gcd(i32 %1, i32 %c)
-
-Popped off ChI-WL:   br i1 %cmp, label %if.then, label %if.else
-
-Popped off ChI-WL:   br i1 %cmp5, label %for.body, label %for.end
-
-Popped off ChI-WL:   %div = sdiv i32 %gsum.2, %c
-
-Popped off ChI-WL:   br i1 %cmp2, label %if.then3, label %if.else4
-
-Popped off ChI-WL:   %add = add nsw i32 %gsum.0, %call
-
-Popped off ChI-WL:   %gsum.0 = phi i32 [ 0, %if.else4 ], [ %add, %for.inc ]
-
-Popped off ChI-WL:   %gsum.1 = phi i32 [ 1073741823, %if.then3 ], [ %gsum.0, %for.end ]
-
-Popped off ChI-WL:   %gsum.2 = phi i32 [ %c, %if.then ], [ %gsum.1, %if.end ]
-
-Popped off ChI-WL:   %arrayidx8 = getelementptr inbounds i32* %2, i32 %rem
-
-Popped off ChI-WL:   store i32 %div, i32* %arrayidx8, align 4
-
- Low       :  %tobool = icmp ne i32* %a, null Retained to Low 
-
- High      :  br i1 %tobool, label %lor.lhs.false, label %if.then
-
- Low       :  %cmp = icmp eq i32 %a_len, 0 Retained to Low 
-
- High      :  br i1 %cmp, label %if.then, label %if.else
-
- Low       :  %arrayidx = getelementptr inbounds i32* %a, i32 0 Retained to Low 
-
- High      :  %0 = load i32* %arrayidx, align 4
-
- High      :  %cmp1 = icmp eq i32 %0, 0
-
- High      :  br i1 %cmp1, label %land.lhs.true, label %if.else4
-
- Low       :  %cmp2 = icmp eq i32 %c, 0 Retained to Low 
-
- High      :  br i1 %cmp2, label %if.then3, label %if.else4
-
- High      :  %gsum.0 = phi i32 [ 0, %if.else4 ], [ %add, %for.inc ]
-
- Low       :  %cmp5 = icmp slt i32 %i.0, %a_len Retained to Low 
-
- High      :  br i1 %cmp5, label %for.body, label %for.end
-
- Low       :  %arrayidx6 = getelementptr inbounds i32* %a, i32 %i.0 Retained to Low 
-
- High      :  %1 = load i32* %arrayidx6, align 4
-
- High      :  %call = call i32 @gcd(i32 %1, i32 %c)
-
- High      :  %add = add nsw i32 %gsum.0, %call
-
- High      :  %gsum.1 = phi i32 [ 1073741823, %if.then3 ], [ %gsum.0, %for.end ]
-
- High      :  %gsum.2 = phi i32 [ %c, %if.then ], [ %gsum.1, %if.end ]
-
- Low       :  %rem = srem i32 %c, 10 Retained to Low 
-
- High      :  %div = sdiv i32 %gsum.2, %c
-
- High      :  %arrayidx8 = getelementptr inbounds i32* %2, i32 %rem
-
- High      :  store i32 %div, i32* %arrayidx8, align 4
-
- High      :  ret i32 %gsum.2
-===-------------------------------------------------------------------------===
-                          ... Statistics Collected ...
-===-------------------------------------------------------------------------===
-
-34 if      - Number of Instructions in High Privilege (Using IF)
- 9 if      - Number of Instructions in Low Privilege (Using IF)
-17 if      - Number of Instructions in Unknown Privilege (Using IF)
-10 mem2reg - Number of PHI nodes inserted
-10 mem2reg - Number of alloca's promoted
- 6 mem2reg - Number of alloca's promoted with a single store
-
-Args: opt -load /usr/local/lib/IF.so -IF -stats -debug text_example.ll 
-WARNING: You're attempting to print out a bitcode file.
-This is inadvisable as it may cause display problems. If
-you REALLY want to taste LLVM bitcode first-hand, you
-can force output with the `-f' option.
-
-Change Value Analysis on function 'gcd'
-
-Popped off ChI-WL:   ret i32 %12
-
-Popped off I-WL:   store i32 %c, i32* %c.addr, align 4
-
-Popped off I-WL:   store i32 %a_i, i32* %a_i.addr, align 4
-
- Low       :  store i32 %a_i, i32* %a_i.addr, align 4 Retained to Low 
-
- Low       :  store i32 %c, i32* %c.addr, align 4 Retained to Low 
-
- High      :  ret i32 %12
-Change Value Analysis on function 'get_gcd_sum'
-
-Popped off ChI-WL:   ret i32 %19
-
-Popped off I-WL:   store i32 %c, i32* %c.addr, align 4
-
-Popped off I-WL:   store i32 %a_len, i32* %a_len.addr, align 4
-
-Popped off I-WL:   store i32* %a, i32** %a.addr, align 4
-
- Low       :  store i32* %a, i32** %a.addr, align 4 Retained to Low 
-
- Low       :  store i32 %a_len, i32* %a_len.addr, align 4 Retained to Low 
-
- Low       :  store i32 %c, i32* %c.addr, align 4 Retained to Low 
-
- High      :  ret i32 %19
-===-------------------------------------------------------------------------===
-                          ... Statistics Collected ...
-===-------------------------------------------------------------------------===
-
-  2 if - Number of Instructions in High Privilege (Using IF)
-  5 if - Number of Instructions in Low Privilege (Using IF)
-100 if - Number of Instructions in Unknown Privilege (Using IF)
+82 if - Number of Instructions in High Privilege (Using IF)
+35 if - Number of Instructions in Low Privilege (Using IF)
 
