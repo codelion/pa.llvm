@@ -313,9 +313,18 @@ bool IF::runOnFunction(Function &F) {
 //After Analysis Update Stats
   for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I){
     LatticeVal IV = IF.getLatticeValueFor(&*I);
-    if(IV.isChanged()) ++NumInstChanged;
-    else if(IV.isUnchanged()) ++NumInstUnchanged;
-    else ++NumInstUndef;
+    if(IV.isChanged()) {
+     ++NumInstChanged;
+     DEBUG(dbgs() << "\n High      :" << *I << '\n');    
+     }
+    else if(IV.isUnchanged()) {
+    ++NumInstUnchanged;
+     DEBUG(dbgs() << "\n Low       :" << *I << " Retained to Low \n");        
+    }
+    else {
+    ++NumInstUndef;
+//     DEBUG(dbgs() << "\n Uncertain :" << *I << " Uncertain \n");        
+    }
   }
 
 //Remove unreachable and unchanged instructions which can be removed
