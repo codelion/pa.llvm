@@ -12,7 +12,7 @@
 #include "llvm/Analysis/AliasAnalysis.h"
 #include "llvm/Analysis/ValueTracking.h"
 #include "llvm/Transforms/Utils/Local.h"
-#include "llvm/Target/TargetData.h"
+#include "llvm/DataLayout.h"
 #include "llvm/Support/CallSite.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/ErrorHandling.h"
@@ -109,17 +109,17 @@ public:
 /// Analyzer - This class is a general purpose Analyzer for propagating Changed Values.
 ///
 class Analyzer : public InstVisitor<Analyzer> {
-  const TargetData *TD;
+  const DataLayout *TD;
   DenseMap<Value*, LatticeVal> ValueState;  // The state each value is in.
   SmallVector<Value*, 64> InstWorkList; // Worklist of all instructions
   SmallVector<Value*, 64> ChInstWorkList; // Worklist of Changed instructions
 
   public:
-    Analyzer(const TargetData *td) : TD(td) {}
+    Analyzer(const DataLayout *td) : TD(td) {}
 
     LatticeVal getLatticeValueFor(Value *V) const {
       DenseMap<Value*, LatticeVal>::const_iterator I = ValueState.find(V);
-      assert(I != ValueState.end() && "V is not in valuemap!");
+      //assert(I != ValueState.end() && "V is not in valuemap!");
       return I->second;
     } 
 
@@ -264,7 +264,7 @@ static RegisterPass<CVA> X("cva", "Change Value Analysis", false, false);
 
 bool CVA::runOnFunction(Function &F) {
   DEBUG(dbgs() << "Change Value Analysis on function '" << F.getName() << "'\n");
-  Analyzer cva(getAnalysisIfAvailable<TargetData>());
+  Analyzer cva(getAnalysisIfAvailable<DataLayout>());
 
   MadeChanges = false;
   AA = &getAnalysis<AliasAnalysis>();
