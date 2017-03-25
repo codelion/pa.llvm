@@ -16,7 +16,7 @@ Details on LLVM Pass can be found at http://llvm.org/docs/WritingAnLLVMPass.html
 
 Publications
 ------------
-[An Empirical Study of Path Feasibility Queries] (http://arxiv.org/abs/1302.4798), CoRR 2013
+[An Empirical Study of Path Feasibility Queries](http://arxiv.org/abs/1302.4798), CoRR 2013
 
-[A Critical Review of Dynamic Taint Analysis and Forward Symbolic Execution] (http://asankhaya.github.io/pdf/ACriticalReviewofDynamicTaintAnalysisandForwardSymbolicExecution.pdf), Technical Report NUS 2012
+[A Critical Review of Dynamic Taint Analysis and Forward Symbolic Execution](http://asankhaya.github.io/pdf/ACriticalReviewofDynamicTaintAnalysisandForwardSymbolicExecution.pdf), Technical Report NUS 2012
 
